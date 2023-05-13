@@ -25,6 +25,8 @@ def FileUploadView(request):
             amount=1.5*NumPages
         else:
             amount=5*NumPages
+
+        # Creating Payment uisng Razorpay
         client=razorpay.Client(auth=(settings.KEY,settings.SECRET))
         payment=client.order.create({'amount':100*amount,'currency':'INR','payment_capture':1})
         docs=Document.objects.create(
@@ -34,10 +36,8 @@ def FileUploadView(request):
             print_color=color,
             amount=amount,
             razorpay_order_id=payment['id']
-        ).save()
-        if payment:
-            print(payment)
-            # print(payment_details)
+        )
+        docs.save()
         context={
             'payment':payment,
         }
@@ -45,20 +45,37 @@ def FileUploadView(request):
 
 @csrf_exempt
 def HandleSuccess(request):
+    context={}
     order_id=request.GET.get('order_id')
     docs=Document.objects.get(razorpay_order_id=order_id)
-    docs.is_paid=True
-    # print(order_id)
-    print(docs.razorpay_order_id)
-    content={
+    response=request.POST
+    print(response['razorpay_order_id'])
+    param_dict={
+        'razorpay_payment_id':order_id
+    #     'razorpay_order_id':response['razorpay_order_id'],
+    #     'razorpay_signature':response['razorpay_signature'],
+    }
+    print(param_dict)
+    client=razorpay.Client(auth=(settings.KEY,settings.SECRET))
+    # try:
+    #     status=client.utility.verify_payment_signature(param_dict)
+    #     docs=Document.objects.get(razorpay_order_id=response['razorpay_order_id'])
+    #     docs.razorpay_payment_id=response['razorpay_payment_id']
+    #     docs.is_paid=True
+    #     docs.save()
+    context={
         'name':docs.name,
         'paid':docs.is_paid,
         'amount':docs.amount,
         'transaction_id':docs.razorpay_order_id,
         'description':docs.description,
         'print_color':docs.print_color,
-    }
-    return render(request,"templates/success.html",content)
+        # 'status':status
+        }
+    return render(request,"templates/success.html",context)
+    # except:
+    #     return render(request,"templates/success.html",context)
+
 
 # class DocumentCreateView(CreateView):
 #     model = Document

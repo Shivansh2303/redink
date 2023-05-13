@@ -2,11 +2,15 @@
 
 {% block content %}
   <h2>Upload a file</h2>
-  <form method="post" enctype="multipart/form-data" >
+  <form method="post" enctype="multipart/form-data" class="form">
     {% csrf_token %}
     <div>
       <label for="text">Please enter your name : </label>
       <input type="text" class="name" name="name" >
+    </div>
+    <div>
+      <label for="text">Please enter your Email : </label>
+      <input type="email" class="email" name="email">
     </div>
     <div>
       <input type="file" class="file" name="file" >
@@ -19,12 +23,20 @@
           <option>Color</option>
    </select>
   </div>
-  
+ 
   <button type="submit">Upload</button> 
     <!-- {{ form.as_p }}
     <button type="submit">Upload</button> -->
   </form>
-   <div><button id="rzp-button1">Pay with Razorpay</button></div> -->
+  <script>
+   $("form").submit(function() {
+    $.post($(this).attr('action'), $(this).serializeArray());
+    window.close();
+});
+  </script>
+
+{% if payment %}
+   <div><button id="rzp-button1">Pay with Razorpay</button></div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
@@ -38,10 +50,10 @@
         "order_id": "{{payment.id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
         "handler": function (response){
           payment_id=response.razorpay_payment_id;
-          window.location.href="http://127.0.0.1:8000/success/?order_id={{payment.id}}&payment_id={{payment_id}}"
-          // alert(response.razorpay_payment_id);
-          // alert(response.razorpay_order_id);
-          // alert(response.razorpay_signature)
+          window.location.href="http://127.0.0.1:8000/success/?order_id={{payment.id}}"
+          alert(response.razorpay_payment_id);
+          alert(response.razorpay_order_id);
+          alert(response.razorpay_signature)
         },
         "theme": {
             "color": "#3399cc"
@@ -62,4 +74,5 @@
         e.preventDefault();
     }
     </script> 
+  {% endif %}
 {% endblock %}

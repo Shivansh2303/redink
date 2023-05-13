@@ -74,6 +74,11 @@ p {
   margin-bottom:20px;
   text-align: center;
 }
+a {
+  display: inline-block;
+  text-align: center;
+}
+
 
 /** page structure **/
 #wrapper {
@@ -151,7 +156,7 @@ p {
   </script>
 
 <body>
-    <body>
+    {% if status %}
         <div id="wrapper">
          <h1>Payment Successful</h1>
          <p>Your payment has been processed! Details of transaction are included below</p>
@@ -174,7 +179,7 @@ p {
                <td class="ralign">example@mail.com</td>
             <tr>
                <td class="lalign">Desription</td>
-               <td class="ralign">{{ content.description}}</td>
+               <td class="ralign">{{ context.description}}</td>
             </tr>
             <tr>
                <td class="lalign">File</td>
@@ -182,15 +187,15 @@ p {
             </tr>
             <tr>
                <td class="lalign">Print Type</td>
-               <td class="ralign">{{content.print_color}}</td>
+               <td class="ralign">{{context.print_color}}</td>
             </tr>
             <tr>
                <td class="lalign">Amount</td>
-               <td class="ralign">{{content.amount}}</td>
+               <td class="ralign">{{context.amount}}</td>
             </tr>
             <tr>
                <td class="lalign">Order ID</td>
-               <td class="ralign">{{content.order_id}}</td>
+               <td class="ralign">{{context.order_id}}</td>
             </tr>
             <tr>
                <td class="lalign">Payment Type</td>
@@ -203,7 +208,13 @@ p {
            </tbody>
          </table>
         </div> 
-       </body>
+    {% else %}
+    <h1 style="font-size: xx-large; ">Your Payment is Failed! Try again.</h1>
+    {% endif %}
+    <div class="anotherForm">
+    <h1><a href="{% url 'file-upload' %}" class="paymentFail" role="button" style="font-size: xx-large; ">Print Another File</a></h1>
+    
+    </div>
 </body>
 
 {% endblock content %}

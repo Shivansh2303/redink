@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('file/upload', views.FileUploadView, name ='document'),
+    path('file/upload', views.FileUploadView, name ='file-upload'),
     path('success/',views.HandleSuccess,name='payment-success'),
 ]
 
