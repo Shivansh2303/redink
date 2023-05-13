@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Upload a file</h2>
+  <form method="post" enctype="multipart/form-data" >
+    {% csrf_token %}
+    <div>
+      <label for="text">Please enter your name : </label>
+      <input type="text" class="name" name="name" >
+    </div>
+    <div>
+      <input type="file" class="file" name="file" >
+    </div>
+    <div>
+    <textarea name='description' rows="4" cols="70" class="description" placeholder="Enter the document description"></textarea></div>
+    <div>
+    <select id="print_color" name='print_color' class="print_color">
+          <option>Black & White</option>
+          <option>Color</option>
+   </select>
+  </div>
+  
+  <button type="submit">Upload</button> 
+    <!-- {{ form.as_p }}
+    <button type="submit">Upload</button> -->
+  </form>
+   <div><button id="rzp-button1">Pay with Razorpay</button></div> -->
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+        "key": "rzp_test_MXLwBx3mYtcAMG", // Enter the Key ID generated from the Dashboard
+        "amount": "{{ payment.amount }}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": "INR",
+        "name": "Redink",
+        "description": "Purchase Transaction",
+        "image": "https://example.com/your_logo",
+        "order_id": "{{payment.id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": function (response){
+          payment_id=response.razorpay_payment_id;
+          window.location.href="http://127.0.0.1:8000/success/?order_id={{payment.id}}&payment_id={{payment_id}}"
+          // alert(response.razorpay_payment_id);
+          // alert(response.razorpay_order_id);
+          // alert(response.razorpay_signature)
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.on('payment.failed', function (response){
+            alert(response.error.code);
+            alert(response.error.description);
+            alert(response.error.source);
+            alert(response.error.step);
+            alert(response.error.reason);
+            alert(response.error.metadata.order_id);
+            alert(response.error.metadata.payment_id);
+    });
+    document.getElementById('rzp-button1').onclick = function(e){
+        rzp1.open();
+        e.preventDefault();
+    }
+    </script> 
+{% endblock %}
