@@ -1,5 +1,15 @@
 # redink
-###This is a project for printing documents
-###Build from Django andd integrate with Razorpay for payment 
+This is a project for printing documents
+Build from Django andd integrate with Razorpay for payment 
 This project has a package named Poetry for managing packages and virtual environment 
-Po0packages  
+To install packages required for this project use the command "poetry install" 
+This will create a folder "venv" for virtual env , all the project will be install in this file
+After installing packages run command "poetry shell"  to activate virtual env
+then run "python manage.py makemigrations","python manage.py migrate" and python manage.py runserver" all one after another to start backend server 
+
+
+#End Points 
+1. file/upload (to upload file ) --only for local 
+2. admin/ (for admin to access backend , admin must create superuser by running command "python manage.py "createsuperuser" and fill the credentials ) --for admin only 
+3. success/ (for payment)-- no need to access automatic redirect
+
