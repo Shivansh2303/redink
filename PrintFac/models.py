@@ -4,6 +4,7 @@ COLOR_TYPE=(('clr','Color'),('blk','Black & White'))
 
 class Document(models.Model):
     name=models.CharField(max_length=50,null=False,blank=False)
+    email=models.EmailField(max_length=50, null=False,blank=False,help_text="Please Enter Email for payment confirmation")
     description  = models.CharField(max_length = 255,blank=True)
     document  = models.FileField(upload_to='documents/')
     print_color=models.CharField(choices=COLOR_TYPE,default="Black & White",max_length=20)

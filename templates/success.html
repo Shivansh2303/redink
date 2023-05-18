@@ -21,11 +21,11 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 }
 html { overflow-y: scroll; }
 body { 
-  background: #eee url('https://i.imgur.com/eeQeRmk.png'); /* https://subtlepatterns.com/weave/ */
+  background:#596677;/* https://subtlepatterns.com/weave/ */
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 62.5%;
   line-height: 1;
-  color: #585858;
+  color: #bcbec3;
   padding: 22px 10px;
   padding-bottom: 55px;
 }
@@ -57,59 +57,71 @@ table { border-collapse: collapse; border-spacing: 0; }
 img { border: 0; max-width: 100%; }
 
 h1 { 
-  font-family:sans-serif;
+  font-family:Arial;
   font-weight: bold;
-  font-size: 3.6em;
+  font-size: 2.5em;
   line-height: 1.7em;
-  /* margin-bottom: 2px; */
+  margin-bottom: 20px; 
   text-align: center;
 }
-p { 
-  font-family: sans-serif;
-  font-weight: bold;
-  font-size: 1em;
+h2 { 
+  font-family:Arial;
+  font-size: 1.5em;
   line-height: 1.7em;
-  padding-left: 30px;
-  margin-top: 1px;
-  margin-bottom:20px;
+  margin-bottom: 20px; 
   text-align: center;
+  
 }
+
 a {
   display: inline-block;
   text-align: center;
 }
 
-
 /** page structure **/
 #wrapper {
   display: block;
-  width: 850px;
-  background: #fff;
-  margin: 0 auto;
+  width: 500px;
+  margin: 50px auto;
   padding: 10px 17px;
-  -webkit-box-shadow: 2px 2px 3px -1px rgba(0,0,0,0.35);
+  
+}
+#successWrap {
+  display: block;
+  width: 500px;
+  background: #24272e;
+  margin: 10px auto;
+  padding: 10px 17px;
+ -webkit-box-shadow: 2px 2px 2px 1px rgba(0,0,0,0.1);
+  
+  border-radius: 25px;
 }
 
 #keywords {
-  margin: 0 auto;
-  font-size: 1.2em;
-  margin-bottom: 15px;
+  
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  width: 500px;
+  border-radius: 25px ;
+ background-color: #24272e;
+  padding:70px 70px;
+  -webkit-box-shadow: 2px 2px 2px 1px rgba(0,0,0,0.1);
 }
-
 
 #keywords thead {
   cursor: pointer;
-  background: #c9dff0;
+  
 }
 #keywords thead tr th { 
-  font-weight: bold;
-  padding: 12px 30px;
-  padding-left: 42px;
+  
+  padding: 20px 30px;
+  padding-left: 40px;
+
 }
 #keywords thead tr th span { 
-  padding-right: 20px;
-  background-repeat: no-repeat;
-  background-position: 100% 100%;
+  font-weight: 500;
+  font-size: 1.4em;
+  
 }
 
 #keywords thead tr th.headerSortUp, #keywords thead tr th.headerSortDown {
@@ -123,20 +135,26 @@ a {
   background-image: url('https://i.imgur.com/RkA9MBo.png');
 }
 
-
 #keywords tbody tr { 
-  color: #555;
+  color: #bcbec3;
+  padding-left: 50px;
+  
 }
 #keywords tbody tr td {
   text-align: center;
-  padding: 15px 10px;
+  padding: 10px 10px;
+  
+  font-weight: normal;
 }
 #keywords tbody tr td.lalign {
   text-align: left;
+  padding-left: 50px;
 }
 #keywords tbody tr td.ralign {
   text-align: right;
+  padding-right: 50px;
 }
+
 </style>
 
 <head>
@@ -149,6 +167,7 @@ a {
             transform: translate(-50%, -50%);
         }
     </style>
+    <link rel="stylesheet" href="https://use.fontawesome.com/release/v5.11.1/css/all.css">
 </head>
 <script>$(function(){
     $('#keywords').tablesorter(); 
@@ -156,30 +175,30 @@ a {
   </script>
 
 <body>
-    {% if status %}
-        <div id="wrapper">
-         <h1>Payment Successful</h1>
-         <p>Your payment has been processed! Details of transaction are included below</p>
-         
+  {% if context.status %}
+        <div id="wrapper" >
+          <div id="successWrap">
+            <h1>Payment Successful</h1>
+            <h1>Rs. {{ context.amount }}</h1>
+          </div>
+          
          <table id="keywords" cellspacing="0" cellpadding="0">
            <thead>
              <tr>
-               <th><span>Keywords</span></th>
-               <th><span>Information</span></th>
-               
+               <th><span>Payment Details</span></th>
              </tr>
            </thead>
            <tbody>
              <tr>
                <td class="lalign">Name</td>
-               <td class="ralign">{{ content.name}}</td>
+               <td class="ralign">{{ context.name }}</td>
             <tr>
              <tr>
                <td class="lalign">Email</td>
-               <td class="ralign">example@mail.com</td>
+               <td class="ralign">{{ context.email }}</td>
             <tr>
                <td class="lalign">Desription</td>
-               <td class="ralign">{{ context.description}}</td>
+               <td class="ralign">{{ context.description }}</td>
             </tr>
             <tr>
                <td class="lalign">File</td>
@@ -187,24 +206,20 @@ a {
             </tr>
             <tr>
                <td class="lalign">Print Type</td>
-               <td class="ralign">{{context.print_color}}</td>
+               <td class="ralign">{{ context.print_color }}</td>
             </tr>
             <tr>
-               <td class="lalign">Amount</td>
-               <td class="ralign">{{context.amount}}</td>
-            </tr>
+              <td class="lalign">Transcation ID</td>
+              <td class="ralign">{{ context.transaction_id }}</td>
+           </tr>
             <tr>
-               <td class="lalign">Order ID</td>
-               <td class="ralign">{{context.order_id}}</td>
+               <td class="lalign">Payment Time</td>
+               <td class="ralign">{{ context.payment_time }}</td>
             </tr>
             <tr>
                <td class="lalign">Payment Type</td>
                <td class="ralign">UPI</td>
             </tr>
-            <tr>
-               <td class="lalign">Transaction ID</td>
-               <td class="ralign">1545486640</td>
-             </tr>
            </tbody>
          </table>
         </div> 
@@ -212,9 +227,9 @@ a {
     <h1 style="font-size: xx-large; ">Your Payment is Failed! Try again.</h1>
     {% endif %}
     <div class="anotherForm">
-    <h1><a href="{% url 'file-upload' %}" class="paymentFail" role="button" style="font-size: xx-large; ">Print Another File</a></h1>
+    <h2><a href="{% url 'file-upload' %}" id="paymentFail" role="button"; ">Print Another File</a></h2>
     
-    </div>
+    </div> 
 </body>
 
 {% endblock content %}

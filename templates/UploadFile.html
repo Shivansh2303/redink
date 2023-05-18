@@ -1,30 +1,86 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
+  html, body {
+  display: flex;
+  justify-content: center;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 15px;
+  }
+  form {
+    padding: 50px;  
+  border: 1px solid #523838;
+  border-radius: 10px;
+  }
+  
+  button{
+  background-color: #6f89ae;
+  color: white;
+  padding: 14px 0;
+  margin: 10px 0;
+  border: none;
+  cursor: grab;
+  width: 48%;
+  }
+  #rzp-button1 {
+  background-color: #6f89ae;
+  color: white;
+  padding: 14px 0;
+  margin: 10px 0;
+  border: none;
+  cursor: grab;
+  width: 48%;
+  }
+  h1 {
+  text-align:center;
+  fone-size:18;
+  }
+  button:hover {
+  opacity: 0.8;
+  }
+  .formcontainer {
+  text-align: center;
+  margin: 24px 50px 12px;
+  }
+  #file {
+  padding: 16px 0;
+  text-align:left;
+  
+  /* Change styles for span on extra small screens */
+  @media screen and (max-width: 300px) {
+  span.psw {
+  display: block;
+  float: none;
+  }
+  
+</style>
   <h2>Upload a file</h2>
   <form method="post" enctype="multipart/form-data" class="form">
     {% csrf_token %}
-    <div>
-      <label for="text">Please enter your name : </label>
-      <input type="text" class="name" name="name" >
+    <div id="file" class="filecontainer">
+      <label for="name"><strong>Name</strong></label>
+      <input type="text" placeholder="Enter Username" name="name" required>
     </div>
-    <div>
-      <label for="text">Please enter your Email : </label>
-      <input type="email" class="email" name="email">
+    <div id="file">
+      <label for="email"><strong>E-mail</strong></label>
+      <input type="email" placeholder="Enter E-mail" name="email" id="email" required>
     </div>
-    <div>
-      <input type="file" class="file" name="file" >
+    <div id="file">
+      <label for="file"><strong>Document</strong></label>
+      <input type="file" placeholder="Choose File" name="file" required>
     </div>
-    <div>
-    <textarea name='description' rows="4" cols="70" class="description" placeholder="Enter the document description"></textarea></div>
-    <div>
-    <select id="print_color" name='print_color' class="print_color">
-          <option>Black & White</option>
-          <option>Color</option>
+    <div id=file>
+    <textarea name='description' rows="4" cols="70" class="description" placeholder="Enter the document description"></textarea></divid>
+    <div id="file">
+      <label for="print_color"><strong>Please Select Color</strong></label>
+    <select id="print_color" name='print_color' class="print_color" required>
+          <option>Black & White | Rs 1.5/page</option>
+          <option>Color | Rs 3/page</option>
    </select>
   </div>
  
-  <button type="submit">Upload</button> 
+  <button type="submit"><strong>Upload</strong></button> 
     <!-- {{ form.as_p }}
     <button type="submit">Upload</button> -->
   </form>

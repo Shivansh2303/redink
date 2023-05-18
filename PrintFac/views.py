@@ -11,12 +11,16 @@ from .forms import DocumentForm
 from django.views.decorators.csrf import csrf_exempt
 import razorpay
 from django.conf import settings
+import json
 
 def FileUploadView(request):
     context={}
     if request.method == 'POST':
         file = request.FILES['file']
+        file1 = request.FILES['file'].name
+        print(file1)
         name=request.POST['name']
+        email=request.POST['email']
         description=request.POST['description']
         color=request.POST['print_color']
         reader = PyPDF2.PdfReader(file)
@@ -35,7 +39,9 @@ def FileUploadView(request):
             description=description,
             print_color=color,
             amount=amount,
-            razorpay_order_id=payment['id']
+            razorpay_order_id=payment['id'],
+            email=email,
+            
         )
         docs.save()
         context={
@@ -48,31 +54,39 @@ def HandleSuccess(request):
     context={}
     order_id=request.GET.get('order_id')
     docs=Document.objects.get(razorpay_order_id=order_id)
-    response=request.POST
-    print(response['razorpay_order_id'])
+    payload_body=request.body.decode()  
+    # webhook_signature = request.headers['razorpay_payment_signature']
     param_dict={
         'razorpay_payment_id':order_id
     #     'razorpay_order_id':response['razorpay_order_id'],
     #     'razorpay_signature':response['razorpay_signature'],
     }
-    print(param_dict)
+    # print(param_dict)
+    # webhook_secret = "webhook_secret"  
     client=razorpay.Client(auth=(settings.KEY,settings.SECRET))
+    # verify = client.utility.verify_webhook_signature(json.dumps(body, separators=(',', ':')), webhook_signature, webhook_secret)
+    # print("verification of signature {}".format(verify))
     # try:
-    #     status=client.utility.verify_payment_signature(param_dict)
+    # status=client.utility.verify_payment_signature(param_dict)
     #     docs=Document.objects.get(razorpay_order_id=response['razorpay_order_id'])
     #     docs.razorpay_payment_id=response['razorpay_payment_id']
     #     docs.is_paid=True
     #     docs.save()
+    # print(status,__name__)
     context={
         'name':docs.name,
         'paid':docs.is_paid,
         'amount':docs.amount,
+        'file_name':docs.document,
+        'email':docs.email,
         'transaction_id':docs.razorpay_order_id,
+        'payment_time':docs.payment_date,
         'description':docs.description,
         'print_color':docs.print_color,
-        # 'status':status
+        'status':True
         }
-    return render(request,"templates/success.html",context)
+    # print(context)
+    return render(request,"templates/success.html",{'context':context})
     # except:
     #     return render(request,"templates/success.html",context)
 
