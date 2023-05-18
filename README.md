@@ -1,11 +1,11 @@
 # redink
-##This is a project for printing documents
-##Build from Django andd integrate with Razorpay for payment 
-###This project has a package named Poetry for managing packages and virtual environment 
-###To install packages required for this project use the command "poetry install" 
-###This will create a folder "venv" for virtual env , all the project will be install in this file
-##After installing packages run command "poetry shell"  to activate virtual env
-##then run "python manage.py makemigrations","python manage.py migrate" and python manage.py runserver" all one after another to start backend server 
+1. This is a project for printing documents
+2. Build from Django andd integrate with Razorpay for payment 
+3. This project has a package named Poetry for managing packages and virtual environment 
+4. To install packages required for this project use the command "poetry install" 
+5. This will create a folder "venv" for virtual env , all the project will be install in this file
+6. After installing packages run command "poetry shell"  to activate virtual env
+7. then run "python manage.py makemigrations","python manage.py migrate" and python manage.py runserver" all one after another to start backend server 
 
 
 #End Points 
